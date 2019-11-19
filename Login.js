@@ -28,8 +28,8 @@ export default class Login extends React.Component {
     this.state = {
     selected:'Вход',
     photo:null,
-    passCorrect:true,
-    emailCorrect:true,
+    passCorrect:'idk',
+    emailCorrect:'idk',
     email:'',
     password:'',
     checked:false};
@@ -49,28 +49,28 @@ export default class Login extends React.Component {
   //Валидация
   validate = (e,p) => {
       let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if(reg.test(e) === false)
+      if(reg.test(e) == false)
         {
-          this.setState({emailCorrect:false})
+          this.setState({emailCorrect:'false'})
         }
       else 
         {
-          this.setState({emailCorrect:true})
+          this.setState({emailCorrect:'true'})
         }
       if(p.length < 5)
         {
-          this.setState({passCorrect:false})
+          this.setState({passCorrect:'false'})
         }
       else 
         {
-          this.setState({passCorrect:true})
+          this.setState({passCorrect:'true'})
         }
-      this.tryNavigate();
   }
   //Переход на другую страницу
   tryNavigate=()=>{
-    if(this.state.emailCorrect==true&&this.state.email.length>0&&this.state.passCorrect==true&&this.state.password.length>0)
-    {
+    if(this.state.emailCorrect=='true'&&this.state.email.length>0&&this.state.passCorrect=='true'&&this.state.password.length>0)
+    {console.log(this.state.emailCorrect);
+      console.log(this.state.passCorrect);
       if(this.state.selected=='Вход'){
       const { navigate } = this.props.navigation;
       navigate('MapScreen')
@@ -119,8 +119,8 @@ export default class Login extends React.Component {
             <View style={{alignSelf: 'stretch'}}>
               <Text style={[styles.basicTextStyle,styles.inputHeader]}>Email</Text>
               <TextInput onChangeText={(value) => this.setState({email: value})} value={this.state.email} style={styles.textInput}/>
-              <View style={this.state.emailCorrect==true ? styles.border : styles.borderErr}/>
-              <Text style={this.state.emailCorrect==true ? styles.errorTextOff : styles.errorTextOn}>Ошибка, неверный email. Попробуйте снова.</Text>
+              <View style={this.state.emailCorrect=='false' ? styles.borderErr:styles.border}/>
+              <Text style={this.state.emailCorrect=='false' ?  styles.errorTextOn:styles.errorTextOff}>Ошибка, неверный email. Попробуйте снова.</Text>
            </View>
 
             <View style={{alignSelf: 'stretch'}}>
@@ -128,8 +128,8 @@ export default class Login extends React.Component {
               <PasswordTextInput
               value={this.state.password}
               onChangeText={password => this.setState({ password })}/>
-              <View style={this.state.passCorrect==true ? styles.border : styles.borderErr}/>
-              <Text style={this.state.passCorrect==true ? styles.errorTextOff : styles.errorTextOn}>Неверный пароль</Text>
+              <View style={this.state.passCorrect=='false' ? styles.borderErr:styles.border}/>
+              <Text style={this.state.passCorrect=='false' ? styles.errorTextOn:styles.errorTextOff}>Неверный пароль</Text>
             </View>
 
            {this.state.selected==='Вход' && 
@@ -146,14 +146,14 @@ export default class Login extends React.Component {
             <CheckBox value={this.state.checked} onValueChange={() => this.setState({ checked: !this.state.checked })}/>
               <Text style={[styles.basicTextStyle,{textAlign:'center'}]}>
                 Я согласен с 
-                <Text style={[styles.basicTextStyle,{textAlign:'center',color:'#3066E0'}]}onPress={() => Linking.openURL('http://vk.com')}> Политикой Конфиденциальности</Text>
+                <Text style={[styles.basicTextStyle,{textAlign:'center',color:'#3066E0'}]} onPress={() => Linking.openURL('http://vk.com')}> Политикой Конфиденциальности</Text>
               </Text>
             </View>
            }
 
           <TouchableOpacity
                 style={styles.buttonStyle}
-                onPress={() => {this.validate(this.state.email,this.state.password);}}>
+                onPress={() => {this.validate(this.state.email,this.state.password);this.tryNavigate();}}>
                   <Text style={styles.buttonText}>{this.state.selected}</Text>
           </TouchableOpacity> 
       </View>
